@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アプリ制作入門コース｜Kojiのスキルアッププログラム</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --green: #22c55e;
+    --green-dark: #16a34a;
+    --green-light: #dcfce7;
+    --green-pale: #f0fdf4;
+    --text: #1a2332;
+    --text-mid: #4b5563;
+    --text-light: #9ca3af;
+    --border: #e5e7eb;
+    --bg: #f8fafc;
+    --white: #ffffff;
+    --code-bg: #1e2936;
+    --warn: #f59e0b;
+    --warn-bg: #fffbeb;
+    --tip-bg: #eff6ff;
+    --tip: #3b82f6;
+    --radius: 12px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    font-size: 15px;
+  }
+
+  /* ===== HEADER ===== */
+  .site-header {
+    background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%);
+    color: white;
+    padding: 48px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 100px;
+    padding: 4px 16px;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+  }
+  .site-header h1 {
+    font-size: clamp(22px, 5vw, 36px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .site-header p {
+    font-size: 14px;
+    opacity: 0.8;
+    max-width: 480px;
+    margin: 0 auto 24px;
+  }
+  .header-meta {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .header-meta span {
+    font-size: 13px;
+    opacity: 0.7;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* ===== NAV ===== */
+  .toc-bar {
+    background: var(--white);
+    border-bottom: 2px solid var(--green);
+    padding: 0 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .toc-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .toc-inner::-webkit-scrollbar { display: none; }
+  .toc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-mid);
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    margin-bottom: -2px;
+  }
+  .toc-link:hover, .toc-link.active {
+    color: var(--green-dark);
+    border-bottom-color: var(--green);
+  }
+  .toc-num {
+    background: var(--green-light);
+    color: var(--green-dark);
+    font-size: 11px;
+    font-weight: 700;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ===== MAIN ===== */
+  .main-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* ===== PROGRESS ===== */
+  .progress-section {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .progress-section h2 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-mid);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .progress-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .prog-item {
+    background: var(--green-pale);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .prog-item.done {
+    background: var(--green-light);
+    border-color: var(--green);
+  }
+  .prog-item .prog-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 4px;
+  }
+  .prog-item .prog-name {
+    font-size: 11px;
+    color: var(--text-mid);
+    line-height: 1.4;
+  }
+  .prog-item.done .prog-num { color: var(--green-dark); }
+  .prog-item .prog-check {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+  .progress-bar-wrap {
+    margin-top: 16px;
+  }
+  .progress-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+  .progress-bar {
+    height: 8px;
+    background: var(--green-light);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), var(--green-dark));
+    border-radius: 100px;
+    transition: width 0.5s ease;
+  }
+
+  /* ===== LESSON CARD ===== */
+  .lesson-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .lesson-header {
+    background: linear-gradient(135deg, var(--green-pale), var(--white));
+    border-bottom: 1px solid var(--green-light);
+    padding: 20px 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .lesson-number {
+    background: var(--green);
+    color: white;
+    font-size: 12px;
+    font-weight: 900;
+    min-width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .lesson-title-wrap { flex: 1; }
+  .lesson-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .lesson-meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .lesson-tag {
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 100px;
+    background: var(--green-light);
+    color: var(--green-dark);
+    font-weight: 600;
+  }
+  .lesson-goal-text {
+    font-size: 12px;
+    color: var(--text-mid);
+  }
+  .lesson-toggle {
+    font-size: 20px;
+    color: var(--green);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .lesson-toggle.open { transform: rotate(180deg); }
+  .lesson-body {
+    display: none;
+    padding: 0;
+  }
+  .lesson-body.open { display: block; }
+
+  /* ===== CONTENT SECTIONS ===== */
+  .content-section {
+    padding: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .content-section:last-child { border-bottom: none; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--green-light);
+  }
+
+  /* ===== CHECKLIST ===== */
+  .checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--bg);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+  }
+  .checklist li:hover { border-color: var(--green); background: var(--green-pale); }
+  .checklist li.checked {
+    background: var(--green-light);
+    border-color: var(--green);
+    text-decoration: line-through;
+    color: var(--text-light);
+  }
+  .check-box {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    transition: all 0.2s;
+    margin-top: 1px;
+  }
+  .checklist li.checked .check-box {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+  .check-box::after {
+    content: '';
+    display: none;
+  }
+  .checklist li.checked .check-box::after {
+    content: '✓';
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  /* ===== TEXT CONTENT ===== */
+  .text-content h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 20px 0 8px;
+    padding-left: 12px;
+    border-left: 3px solid var(--green);
+  }
+  .text-content h3:first-child { margin-top: 0; }
+  .text-content p {
+    font-size: 14px;
+    color: var(--text-mid);
+    margin-bottom: 12px;
+    line-height: 1.9;
+  }
+  .text-content ul, .text-content ol {
+    padding-left: 20px;
+    margin-bottom: 12px;
+  }
+  .text-content li {
+    font-size: 14px;
+    color: var(--text-mid);
+    margin-bottom: 6px;
+    line-height: 1.7;
+  }
+  .text-content strong { color: var(--text); }
+  .text-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 13px;
+  }
+  .text-content th {
+    background: var(--green-pale);
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 700;
+    border: 1px solid var(--green-light);
+    color: var(--green-dark);
+  }
+  .text-content td {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    color: var(--text-mid);
+  }
+  .text-content tr:nth-child(even) td { background: var(--bg); }
+
+  /* ===== CODE ===== */
+  .code-block {
+    background: var(--code-bg);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 12px 0;
+    overflow-x: auto;
+    position: relative;
+  }
+  .code-block code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #a8d8a8;
+    line-height: 1.7;
+    white-space: pre;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    border-radius: 4px;
+    color: #9ca3af;
+    font-size: 11px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.2); color: white; }
+
+  /* ===== TIP / WARN ===== */
+  .tip-box {
+    background: var(--tip-bg);
+    border-left: 4px solid var(--tip);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: #1e40af;
+    line-height: 1.7;
+  }
+  .tip-box strong { color: #1e3a8a; }
+  .warn-box {
+    background: var(--warn-bg);
+    border-left: 4px solid var(--warn);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: #92400e;
+    line-height: 1.7;
+  }
+
+  /* ===== STEP ITEM ===== */
+  .step-item {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+  }
+  .step-num {
+    background: var(--green);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    min-width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .step-content { flex: 1; }
+  .step-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  /* ===== SECTION DIVIDER ===== */
+  .section-divider {
+    text-align: center;
+    margin: 40px 0 32px;
+    position: relative;
+  }
+  .section-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--border);
+  }
+  .section-divider span {
+    position: relative;
+    background: var(--bg);
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 0.1em;
+  }
+
+  /* ===== Q&A ===== */
+  .qa-item {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+  .qa-q {
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg);
+    color: var(--text);
+    user-select: none;
+  }
+  .qa-q::after { content: '▼'; font-size: 11px; color: var(--text-light); transition: transform 0.2s; }
+  .qa-q.open::after { transform: rotate(180deg); }
+  .qa-a {
+    display: none;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text-mid);
+    background: white;
+    border-top: 1px solid var(--border);
+    line-height: 1.8;
+  }
+  .qa-a.open { display: block; }
+
+  /* ===== COMPLETE BANNER ===== */
+  .complete-banner {
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    color: white;
+    border-radius: var(--radius);
+    padding: 32px;
+    text-align: center;
+    margin-top: 40px;
+  }
+  .complete-banner h2 { font-size: 24px; margin-bottom: 8px; }
+  .complete-banner p { font-size: 14px; opacity: 0.85; }
+
+  /* ===== GLOSSARY ===== */
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .glossary-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+  .glossary-term {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .glossary-def {
+    font-size: 12px;
+    color: var(--text-mid);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 640px) {
+    .progress-grid { grid-template-columns: repeat(2, 1fr); }
+    .lesson-header { padding: 16px; }
+    .content-section { padding: 16px; }
+    .main-wrap { padding: 16px 12px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="badge">🟢 コース1</div>
+  <h1>アプリ制作入門コース</h1>
+  <p>「焦らないAI活用」の精神で、ゼロからWebアプリを公開する体験をします</p>
+  <div class="header-meta">
+    <span>📚 全4レッスン</span>
+    <span>⏱️ 期間目安：5〜6週間</span>
+    <span>🎯 対象：完全初心者</span>
+  </div>
+</header>
+
+<nav class="toc-bar">
+  <div class="toc-inner">
+    <a href="#progress" class="toc-link">📊 進捗</a>
+    <a href="#lesson1" class="toc-link"><span class="toc-num">1</span>環境構築</a>
+    <a href="#lesson2" class="toc-link"><span class="toc-num">2</span>HTMLページ</a>
+    <a href="#lesson3" class="toc-link"><span class="toc-num">3</span>JavaScript</a>
+    <a href="#lesson4" class="toc-link"><span class="toc-num">4</span>ゲーム完成</a>
+    <a href="#glossary" class="toc-link">📖 用語集</a>
+  </div>
+</nav>
+
+<main class="main-wrap">
+
+  <!-- PROGRESS -->
+  <section id="progress" class="progress-section">
+    <h2>学習進捗</h2>
+    <div class="progress-grid">
+      <div class="prog-item" id="prog1" onclick="toggleProg(1)">
+        <div class="prog-check" id="prog-check1">⬜</div>
+        <div class="prog-num">レッスン1</div>
+        <div class="prog-name">環境構築</div>
+      </div>
+      <div class="prog-item" id="prog2" onclick="toggleProg(2)">
+        <div class="prog-check" id="prog-check2">⬜</div>
+        <div class="prog-num">レッスン2</div>
+        <div class="prog-name">HTMLページ公開</div>
+      </div>
+      <div class="prog-item" id="prog3" onclick="toggleProg(3)">
+        <div class="prog-check" id="prog-check3">⬜</div>
+        <div class="prog-num">レッスン3</div>
+        <div class="prog-name">JavaScript</div>
+      </div>
+      <div class="prog-item" id="prog4" onclick="toggleProg(4)">
+        <div class="prog-check" id="prog-check4">⬜</div>
+        <div class="prog-num">レッスン4</div>
+        <div class="prog-name">ゲーム完成</div>
+      </div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-label">
+        <span id="prog-label">0 / 4 レッスン完了</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-bar-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+  </section>
+
+  <!-- ========== LESSON 1 ========== -->
+  <div class="lesson-card" id="lesson1">
+    <div class="lesson-header" onclick="toggleLesson(1)">
+      <div class="lesson-number">L1</div>
+      <div class="lesson-title-wrap">
+        <div class="lesson-title">環境構築＆最初の一歩</div>
+        <div class="lesson-meta">
+          <span class="lesson-tag">⏱ 1週間</span>
+          <span class="lesson-goal-text">ゴール：Claude Codeを起動して日本語で話しかけることができる</span>
+        </div>
+      </div>
+      <div class="lesson-toggle" id="toggle1">▼</div>
+    </div>
+    <div class="lesson-body" id="body1">
+
+      <div class="content-section">
+        <div class="section-label">📋 チェックリスト</div>
+        <ul class="checklist" id="cl1">
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>Git for Windows をインストールする</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>Claude Code をインストールする</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>Git Bash を開いて Claude Code を起動する</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>「こんにちは、私はプログラミング初心者です」と話しかけてみる</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>CLAUDE.md ファイルを作成する</li>
+        </ul>
+      </div>
+
+      <div class="content-section">
+        <div class="section-label">🌟 このレッスンについて</div>
+        <div class="text-content">
+          <p>「アプリ開発」と聞くと、多くの方がこう思うかもしれません。<strong>「自分には無理だ。プログラミングって難しいんでしょ？」</strong></p>
+          <p>でも、ちょっと待ってください。今はもう、その常識が変わっています。</p>
+          <h3>コードを書けなくても、アプリが作れる時代</h3>
+          <p>2024年以降、AIの急速な進化により、プログラミングの世界に革命が起きました。以前はエンジニアが何ヶ月もかけて作っていたようなアプリが、AIと会話するだけで数時間〜数日で完成するようになったのです。</p>
+          <p>このプログラムで使う「Claude Code」は、まさにその革命の中心にあるツールです。あなたが日本語で「こんなアプリを作りたい」と伝えるだけで、Claude Codeが実際のコードを書き、ファイルを作り、問題を解決してくれます。<strong>あなたはコードを一行も書く必要がありません。</strong></p>
+          <h3>Claude Codeとは？</h3>
+          <table>
+            <tr><th></th><th>ブラウザのClaude</th><th>Claude Code</th></tr>
+            <tr><td>動作場所</td><td>ウェブブラウザ</td><td>あなたのパソコン</td></tr>
+            <tr><td>できること</td><td>会話・文章生成</td><td>ファイル作成・編集・アプリ開発</td></tr>
+            <tr><td>向いている用途</td><td>調べ物・相談</td><td>実際にアプリを作る</td></tr>
+          </table>
+          <h3>必要なもの（事前確認）</h3>
+          <ul>
+            <li><strong>OS：</strong>Windows 10 または Windows 11（64bit）</li>
+            <li><strong>インターネット接続：</strong>必要（インストール中は安定した接続が望ましい）</li>
+            <li><strong>Claude.aiのアカウント：</strong>必要（まだの方は https://claude.ai で作成）</li>
+            <li><strong>作業時間の目安：</strong>初回は1〜2時間</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="section-label">📋 手順</div>
+        <div class="text-content">
+          <h3>手順1｜Git for Windowsをインストールする</h3>
+          <p><strong>Gitとは何か？</strong><br>Gitは「ファイルの変更履歴を管理するツール」です。Gitをインストールする主な目的は、<strong>「Git Bash」を手に入れること</strong>です。</p>
+          <p><strong>Git Bashとは何か？</strong><br>Git Bashは、パソコンに文字で指示を出すための「黒い画面」です。Claude Codeのインストールや起動は、この画面を使って行います。やることは決まった文字をコピー＆ペーストするだけです。</p>
+          <div class="tip-box">💡 「ターミナル」や「コマンドプロンプト」と呼ばれるものと同じ種類のツールです。Git Bashは日本語環境でも扱いやすく、このスクールではGit Bashを使って作業を進めます。</div>
+          <ol>
+            <li>https://git-scm.com にアクセスする</li>
+            <li>「Download for Windows」をクリックする</li>
+            <li>ダウンロードされた .exe ファイルを開く</li>
+            <li>インストール画面はすべて「Next」で進んでOK</li>
+            <li>最後に「Install」→「Finish」をクリック</li>
+          </ol>
+          <div class="tip-box">✅ <strong>確認方法：</strong>スタートメニューで「Git Bash」と検索して、アプリが表示されればインストール成功です。</div>
+
+          <h3>手順2｜Claude Codeをインストールする</h3>
+          <p><strong>① Git Bashを開く</strong></p>
+          <ol>
+            <li>画面左下のスタートボタン（Windowsマーク）をクリックする</li>
+            <li>キーボードで「Git Bash」と入力して検索する</li>
+            <li>「Git Bash」というアプリが表示されたらクリックして開く</li>
+          </ol>
+          <div class="tip-box">💡 黒い画面（ターミナル）が開けば成功です。マウスでは操作できませんが、決まった文字を入力するだけなので慣れれば難しくありません。</div>
+
+          <p><strong>② コマンドを貼り付けてインストールする</strong></p>
+          <p>以下のコマンドをコピーして、Git Bashの黒い画面を<strong>右クリック → 「Paste」</strong>で貼り付けます。</p>
+          <div class="tip-box" style="background:#fff3e0;border-color:#f59e0b;color:#78350f;">⚠️ Git Bashでは通常の Ctrl+V では貼り付けできません。<strong>右クリック → 「Paste」</strong>を使ってください。</div>
+          <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">コピー</button><code>npm install -g @anthropic-ai/claude-code</code></div>
+          <div class="tip-box">💡 文字がたくさん流れ始めるので、止まるまで待ちましょう（1〜3分程度）。インストール中は何も操作しなくて大丈夫です。</div>
+
+          <p><strong>③ インストールできたか確認する</strong></p>
+          <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">コピー</button><code>claude --version</code></div>
+          <p>「1.x.x」のような数字が表示されればインストール成功です。</p>
+          <div class="warn-box">⚠️ <strong>「npm: command not found」と表示された場合：</strong>Node.jsがインストールされていません。https://nodejs.org にアクセスし、「LTS」と書かれた緑色のボタンからダウンロードしてインストールしてください。インストール後はGit Bashを再起動してから再試行してください。</div>
+
+          <h3>手順3｜Claude Codeを起動して日本語で話しかける</h3>
+          <ol>
+            <li>Git Bashで、作業用フォルダに移動する</li>
+          </ol>
+          <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">コピー</button><code>cd ~/Documents
+mkdir my-app
+cd my-app</code></div>
+          <div class="tip-box">💡 <strong>コマンドの意味：</strong><br>
+• <code>cd ~/Documents</code>：「ドキュメント」フォルダに移動します。<code>cd</code>は「Change Directory（フォルダを移動する）」の略です。<code>~</code>（チルダ）は「自分のホームフォルダ」を表す記号で、Windowsでは <code>C:¥Users¥あなたのユーザー名</code> に相当します。別の場所で作業したい場合は、<code>~/Documents</code>の部分を書き換えてください（例：デスクトップなら <code>cd ~/Desktop</code>）。<br>
+• <code>mkdir my-app</code>：「my-app」というフォルダを新しく作ります。<br>
+• <code>cd my-app</code>：作ったフォルダの中に移動します。</div>
+          <ol start="2">
+            <li>Claude Codeを起動する</li>
+          </ol>
+          <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">コピー</button><code>claude</code></div>
+          <ol start="3">
+            <li>初回は認証画面が表示されます。ブラウザが開くので、Claude.aiアカウントでログインしてください。</li>
+            <li>起動できたら、日本語で話しかけてみましょう</li>
+          </ol>
+          <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">コピー</button><code>こんにちは。私はプログラミング初心者です。よろしくお願いします。</code></div>
+          <div class="tip-box">💡 Claude Codeを終了するときは <code>Ctrl + C</code> を押すか、<code>/exit</code> と入力してください。</div>
+
+          <h3>手順4｜CLAUDE.mdファイルを作成する</h3>
+          <p>CLAUDE.mdは、Claude Codeに「自分のことを覚えておいてほしい情報」を書いておくファイルです。Claude Codeに以下のように頼んでみましょう。</p>
+          <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">コピー</button><code>CLAUDE.mdファイルを作成してください。
+内容は以下を参考にしてください：
+
+## 私について
+- 名前：（あなたの名前）
+- 目標：初心者向けのシンプルなWebアプリを作ること
+- 使用言語：HTML、JavaScript（これから学ぶ）
+
+## お願い
+- コードには必ずコメントを書いてください
+- 説明は初心者にもわかりやすい言葉でお願いします
+- エラーが出たときは原因と解決方法も教えてください</code></div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="section-label">🚨 よくあるトラブル</div>
+        <div class="qa-item">
+          <div class="qa-q" onclick="toggleQA(this)">「npm: command not found」と表示される</div>
+          <div class="qa-a">Node.jsがインストールされていません。https://nodejs.org にアクセスし、「LTS版」をダウンロードしてインストールしてください。インストール後はGit Bashを再起動してから再試行してください。</div>
+        </div>
+        <div class="qa-item">
+          <div class="qa-q" onclick="toggleQA(this)">Claude Codeのインストール後に「claude: command not found」になる</div>
+          <div class="qa-a">Git Bashを一度閉じて再起動してください。それでも解決しない場合は以下を試してください：<br><code>export PATH="$HOME/.npm-global/bin:$PATH"</code></div>
+        </div>
+        <div class="qa-item">
+          <div class="qa-q" onclick="toggleQA(this)">認証画面（ブラウザ）が開かない</div>
+          <div class="qa-a">Claude Codeが表示するURLをコピーして、手動でブラウザに貼り付けてください。</div>
+        </div>
+        <div class="qa-item">
+          <div class="qa-q" onclick="toggleQA(this)">日本語が文字化けする</div>
+          <div class="qa-a">Git Bashのウィンドウを右クリック →「Options」→「Text」→「Locale」を ja_JP、「Character set」を UTF-8 に変更してください。</div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="section-label">✅ クリア条件</div>
+        <ul class="checklist" id="clear1">
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>Git for Windowsがインストールできた</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>Claude Codeがインストールできた（claude --version で確認）</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>Claude Codeを起動して、日本語で会話できた</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>CLAUDE.mdを作成して保存できた</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========== LESSON 2 ========== -->
+  <div class="lesson-card" id="lesson2">
+    <div class="lesson-header" onclick="toggleLesson(2)">
+      <div class="lesson-number">L2</div>
+      <div class="lesson-title-wrap">
+        <div class="lesson-title">HTMLで最初のページを作る</div>
+        <div class="lesson-meta">
+          <span class="lesson-tag">⏱ 1週間</span>
+          <span class="lesson-goal-text">ゴール：プロフィールページを作ってインターネットに公開する</span>
+        </div>
+      </div>
+      <div class="lesson-toggle" id="toggle2">▼</div>
+    </div>
+    <div class="lesson-body" id="body2">
+
+      <div class="content-section">
+        <div class="section-label">📋 チェックリスト</div>
+        <ul class="checklist">
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>新しいフォルダ「profile-page」を作る</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>Claude Codeに「シンプルなプロフィールページを作って」と頼む</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>完成したHTMLファイルをブラウザで開いて確認する</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>GitHubのアカウントを作成する</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>GitHubにリポジトリを作ってindex.htmlをアップロードする</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>Vercelのアカウントを作成する</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>Vercelでページを公開する（URLを取得する）</li>
+        </ul>
+      </div>
+
+      <div class="content-section">
+        <div class="section-label">🌟 このレッスンについて</div>
+        <div class="text-content">
+          <p>レッスン1では、Claude Codeを起動して日本語で話しかけることができました。それだけで、すでに大きな一歩です。</p>
+          <p>レッスン2のゴールは、<strong>自分のプロフィールページを作って、インターネット上に公開する</strong>ことです。</p>
+          <h3>HTMLって何？</h3>
+          <p>ウェブページはすべて、「HTML（エイチティーエムエル）」というファイルで作られています。このレッスンでは<strong>HTMLを自分で書く必要はありません。</strong>Claude Codeに「こんなページを作って」と日本語で頼むだけで大丈夫です。</p>
+          <h3>Vercelって何？</h3>
+          <p>Vercel（バーセル）は、作ったウェブページを無料でインターネットに公開できるサービスです。GitHubと連携させることで、ファイルをアップロードするだけで自動的に公開URLが発行されます。</p>
+          <h3>必要なもの</h3>
+          <ul>
+            <li>レッスン1が完了していること（Claude Codeが起動できる状態）</li>
+            <li>GitHubのアカウント（まだの方は https://github.com で無料作成）</li>
+            <li>Vercelのアカウント（まだの方は https://vercel.com でGitHubアカウントを使ってサインアップ）</li>
+            <li>作業時間の目安：初回は1〜2時間</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="section-label">📋 手順</div>
+        <div class="text-content">
+          <h3>手順1｜新しいフォルダを作る</h3>
+          <ol>
+            <li>Git Bashを開く</li>
+            <li>以下のコマンドを実行する</li>
+          </ol>
+          <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">コピー</button><code>cd ~/Documents
+mkdir profile-page
+cd profile-page</code></div>
+          <div class="tip-box">💡 <strong>コマンドの意味：</strong><br>
+• <code>cd ~/Documents</code>：「ドキュメント」フォルダに移動します。<code>~</code>（チルダ）は「自分のホームフォルダ」を表す記号で、Windowsでは <code>C:¥Users¥あなたのユーザー名</code> に相当します。別の場所で作業したい場合は、<code>~/Documents</code>の部分を書き換えてください（例：デスクトップなら <code>cd ~/Desktop</code>）。<br>
+• <code>mkdir profile-page</code>：「profile-page」というフォルダを新しく作ります。<br>
+• <code>cd profile-page</code>：作ったフォルダの中に移動します。</div>
+          <ol start="3">
+            <li>Claude Codeを起動する</li>
+          </ol>
+          <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">コピー</button><code>claude</code></div>
+
+          <h3>手順2｜Claude Codeにプロフィールページを作ってもらう</h3>
+          <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">コピー</button><code>名前：（あなたの名前）、職業：（あなたの職業）
+という情報で、シンプルなプロフィールページを作ってください。
+背景は白で、読みやすいデザインにしてください。
+HTML��CSSを使い、1つのファイルにまとめてください。</code></div>
+          <p>しばらく待つと、<code>index.html</code> というファイルが作成されます。エクスプローラーで <code>Documents > profile-page</code> フォルダを開き、<code>index.html</code> をダブルクリックするとブラウザでページが表示されます。</p>
+          <div class="tip-box">💡 気に入らないところがあればClaude Codeにそのまま伝えましょう。「名前の文字をもっと大きくしてください」「背景色を薄いベージュにしてください」など、何度でも修正してくれます。</div>
+
+          <h3>手順3｜GitHubにアップロードする</h3>
+          <ol>
+            <li>https://github.com にログインする</li>
+            <li>右上の「＋」ボタン →「New repository」をクリック</li>
+            <li>「Repository name」の入力欄に <code>profile-page</code> と入力する</li>
+            <li>「Public」が選択されていることを確認して、「Create repository」ボタンをクリック</li>
+            <li>「Quick setup」という画面が表示される</li>
+            <li>画面の中ほどに小さく表示されている文章を探す<br>→ <em>「uploading an existing file」</em> という青いリンクをクリックする</li>
+          </ol>
+          <div class="warn-box">⚠️ <strong>ここが迷いやすいポイント：</strong>目立つ大きなボタンではなく、文章の中の小さなリンクです。</div>
+          <ol start="7">
+            <li>点線で囲まれたエリアに <code>index.html</code> をドラッグ＆ドロップする</li>
+            <li>画面を下にスクロールして「Commit changes」という緑色のボタンをクリックする</li>
+          </ol>
+
+          <h3>手順4｜Vercelで公開する</h3>
+          <p><strong>Vercelのアカウントをまだ持っていない方</strong></p>
+          <ol>
+            <li>https://vercel.com にアクセスする</li>
+            <li>画面右上の「Sign Up」をクリックする</li>
+            <li>「Continue with GitHub」をクリックする</li>
+            <li>GitHubのログイン画面が表示されたらIDとパスワードを入力する</li>
+            <li>「Authorize Vercel」ボタンをクリックする</li>
+            <li>プラン選択画面で「Hobby（無料）」を選んで進む</li>
+          </ol>
+          <div class="tip-box">💡 Vercelの無料プランで今回の作業はすべてできます。クレジットカードの入力は不要です。</div>
+          <p><strong>プロジェクトを作成して公開する</strong></p>
+          <ol>
+            <li>「Add New...」ボタン → 「Project」を選ぶ</li>
+            <li>「Import Git Repository」でさきほど作った <code>profile-page</code> を探して「Import」をクリック</li>
+            <li>設定はそのままで「Deploy」ボタンをクリックする</li>
+            <li>「Congratulations!」画面が表示されたら公開完了！</li>
+          </ol>
+          <div class="tip-box">✅ 発行されたURL（例：https://profile-page-xxx.vercel.app）をスマホで開いても同じページが表示されます！</div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="section-label">🚨 よくあるトラブル</div>
+        <div class="qa-item">
+          <div class="qa-q" onclick="toggleQA(this)">ブラウザで開いたら文字化けしている</div>
+          <div class="qa-a">HTMLファイルの文字コードが正しく設定されていない可能性があります。Claude Codeに「HTMLファイルの文字コードをUTF-8に設定してください」と伝えましょう。</div>
+        </div>
+        <div class="qa-item">
+          <div class="qa-q" onclick="toggleQA(this)">Vercelのデプロイが失敗する</div>
+          <div class="qa-a">リポジトリに index.html ファイルが正しく入っているか確認してください。GitHubのリポジトリページを開き、ファイルが表示されていれば問題ありません。</div>
+        </div>
+        <div class="qa-item">
+          <div class="qa-q" onclick="toggleQA(this)">スマホで見たらデザインが崩れている</div>
+          <div class="qa-a">Claude Codeに「スマホでも見やすいように、レスポンシブデザインに対応させてください」と伝えましょう。</div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="section-label">✅ クリア条件</div>
+        <ul class="checklist">
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>HTMLファイルが完成してブラウザで表示できた</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>GitHubのリポジトリにファイルをアップロードできた</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>Vercelで公開できた（URLを取得できた）</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>スマホからもアクセスして表示を確認した</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========== LESSON 3 ========== -->
+  <div class="lesson-card" id="lesson3">
+    <div class="lesson-header" onclick="toggleLesson(3)">
+      <div class="lesson-number">L3</div>
+      <div class="lesson-title-wrap">
+        <div class="lesson-title">JavaScriptで動きをつける</div>
+        <div class="lesson-meta">
+          <span class="lesson-tag">⏱ 1〜2週間</span>
+          <span class="lesson-goal-text">ゴール：ボタンを押すと何かが起きるページが作れる</span>
+        </div>
+      </div>
+      <div class="lesson-toggle" id="toggle3">▼</div>
+    </div>
+    <div class="lesson-body" id="body3">
+
+      <div class="content-section">
+        <div class="section-label">📋 チェックリスト</div>
+        <ul class="checklist">
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>「ボタンを押すとメッセージが変わるページ」を作る</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>「テキストを入力して変換するツール」を作る</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>作ったものをVercelで公開する</li>
+        </ul>
+      </div>
+
+      <div class="content-section">
+        <div class="section-label">🌟 このレッスンについて</div>
+        <div class="text-content">
+          <h3>「HTML」と「JavaScript」の違い</h3>
+          <table>
+            <tr><th></th><th>HTML</th><th>JavaScript</th></tr>
+            <tr><td>得意なこと</td><td>ページの構造を作る</td><td>ページに動きをつける</td></tr>
+            <tr><td>イメージ</td><td>建物の骨格</td><td>建物の機械</td></tr>
+            <tr><td>使う箇所</td><td>ページの見た目</td><td>ボタン操作・入力処理など</td></tr>
+          </table>
+          <div class="tip-box">💡 JavaScriptと聴くと難しそうに聞こえますが、このレッスンでも<strong>自分でコードを書く必要はありません。</strong>Claude Codeに日本語で指示するだけで大丈夫です。</div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="section-label">📋 手順（3つの練習アイデア）</div>
+        <div class="text-content">
+          <h3>手順1｜名言ボックスを作る</h3>
+          <p>ボタンを押すたびに、ランダムな名言が表示されるページです。</p>
+          <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">コピー</button><code>「名言ボックス」を作ってください。
+ボタンを押すと、日本の名言が5つランダムに表示されるものです。
+シンプルなデザイン、HTMLとJavaScriptを一つのファイルにまとめてください。</code></div>
+
+          <h3>手順2｜文字数カウンターを作る</h3>
+          <p>テキストエリアに文字を入力すると、リアルタイムで文字数が表示されるツールです。</p>
+          <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">コピー</button><code>文字数カウンターツールを作ってください。
+テキストエリアに文字を入力すると、リアルタイムで以下を表示してください。
+・文字数
+・行数
+・Twitter投稿の残り文字数（140字まで）
+HTML��JavaScriptを一つのファイルにまとめてください。</code></div>
+
+          <h3>手順3｜誕生日カウンターを作る</h3>
+          <p>誕生日を入力すると、今日までの日数や次の誕生日までのカウントダウンを表示するページです。</p>
+          <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">コピー</button><code>誕生日カウンターページを作ってください。
+生年月日を入力すると、以下を表示してください。
+・今日まで生きてきた日数
+・次の誕生日まで何日か
+・何歳何ヶ月何日か
+HTML��JavaScriptを一つのファイルにまとめてください。</code></div>
+
+          <h3>Vercelで公開する</h3>
+          <p>3つのうち気に入ったものを選んで、レッスン2と同じ手順でVercelに公開しましょう。GitHubのリポジトリは新しく作成するか、既存の <code>profile-page</code> とは別の名前（例：<code>js-practice</code>）で作成しましょう。</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="section-label">🚨 よくあるトラブル</div>
+        <div class="qa-item">
+          <div class="qa-q" onclick="toggleQA(this)">ボタンを押しても何も起きない</div>
+          <div class="qa-a">ブラウザのF12キーを押して「コンソール」タブに赤字がないか確認してください。赤字があればそれをコピーしてClaude Codeに渡しましょう。</div>
+        </div>
+        <div class="qa-item">
+          <div class="qa-q" onclick="toggleQA(this)">スマホでタップしても反応が遅い</div>
+          <div class="qa-a">Claude Codeに「タッチイベントにも対応して、スマホでの操作性を改善してください」と伝えましょう。</div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="section-label">✅ クリア条件</div>
+        <ul class="checklist">
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>ボタンクリックで何かが変化するページが作れた</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>ユーザーの入力を受け取って結果を返すページが作れた</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>Vercelで公開できた（URLを人に送れた）</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========== LESSON 4 ========== -->
+  <div class="lesson-card" id="lesson4">
+    <div class="lesson-header" onclick="toggleLesson(4)">
+      <div class="lesson-number">L4</div>
+      <div class="lesson-title-wrap">
+        <div class="lesson-title">ゲームアプリを完成させる</div>
+        <div class="lesson-meta">
+          <span class="lesson-tag">⏱ 2週間</span>
+          <span class="lesson-goal-text">ゴール：ゼロから1つのゲームを完成させて公開する</span>
+        </div>
+      </div>
+      <div class="lesson-toggle" id="toggle4">▼</div>
+    </div>
+    <div class="lesson-body" id="body4">
+
+      <div class="content-section">
+        <div class="section-label">📋 チェックリスト</div>
+        <ul class="checklist">
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>作りたいゲームのアイデアを決める</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>Claude Codeと会話しながらゲームを作る</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>バグが出たら「このバグを直して」と頼む</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>スマホでも動くか確認する</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>Vercelで公開する</li>
+        </ul>
+      </div>
+
+      <div class="content-section">
+        <div class="section-label">🌟 このレッスンについて</div>
+        <div class="text-content">
+          <p>レッスン1〜3で、環境構築・HTML・JavaScriptの基本を体験しました。レッスン4は<strong>集大成のレッスン</strong>です。それらのスキルを全部使って、自分のアイデアでゲームアプリを一から作り、世界に公開します。</p>
+          <h3>なぜゲームなのか</h3>
+          <ul>
+            <li><strong>後で検証できる：</strong>データベース不要で、ゲームができるのかできないのか明確</li>
+            <li><strong>楽しい：</strong>自分が完成したもので遊びながらテストできる</li>
+            <li><strong>伝わる：</strong>完成したURLを家族や友人に送るだけで反応が返ってくる</li>
+          </ul>
+          <div class="tip-box">💡 完璧を目指さなくてOK。「動く」ことが最優先。バグはエラーメッセージをそのままClaude Codeに貼り付ければ直してくれます。</div>
+          <h3>ゲームアイデア例</h3>
+          <ul>
+            <li>漢字クイズゲーム（選択式で正解を選ぶ）</li>
+            <li>計算ドリル（足し算・引き算・掛け算・割り算をランダム出題）</li>
+            <li>都道府県クイズ（県庁所在地を当てる）</li>
+            <li>記憶力トレーニング（カードを使って覚える）</li>
+            <li>タイピング練習ゲーム</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="section-label">📋 手順</div>
+        <div class="text-content">
+          <h3>手順1｜最初の依頼（骨格を作る）</h3>
+          <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">コピー</button><code>計算ドリルゲームを作ってください。
+仕様：
+・0〜9の数字で足し算・引き算・掛け算・割り算の問題がランダムで出る
+・回答を入力するフォームがある
+・正解・不正解のフィードバックが表示される
+・10問連続正解でクリアとなる
+シンプルなデザインで、HTMLとJavaScriptを一つのファイルにまとめてください。</code></div>
+
+          <h3>手順2｜ブラウザで動作確認して改良する</h3>
+          <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">コピー</button><code>クリア時に正解数と不正解数を表示してください。</code></div>
+          <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">コピー</button><code>スマホでも快適に遊べるようにボタンを大きくしてください。</code></div>
+
+          <h3>手順3｜バグが出たときの対処</h3>
+          <p>バグが出たときの黄金律：<strong>エラーメッセージをそのままClaude Codeに貼り付ける。</strong></p>
+          <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">コピー</button><code>こんなエラーが出ています。修正してください。
+[エラーメッセージを貼り付ける]</code></div>
+
+          <h3>手順4｜Vercelで公開する</h3>
+          <p>レッスン2と同じ手順で公開しましょう。ゲームを完成させた後、GitHubにアップロードしてVercelで公開するだけです。</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="section-label">🚨 よくあるトラブル</div>
+        <div class="qa-item">
+          <div class="qa-q" onclick="toggleQA(this)">クリア後に再プレイできない</div>
+          <div class="qa-a">Claude Codeに「クリア後に『もう一回遊ぶ』ボタンを追加してください。押すと得点と問題数がリセットされて新しい問題が始まります。」と伝えましょう。</div>
+        </div>
+        <div class="qa-item">
+          <div class="qa-q" onclick="toggleQA(this)">問題が毎回同じものが出る</div>
+          <div class="qa-a">Claude Codeに「問題が毎回違うものになるよう、ランダム化ロジックを見直してください。」と伝えましょう。</div>
+        </div>
+        <div class="qa-item">
+          <div class="qa-q" onclick="toggleQA(this)">作りたいゲームが思いつかない</div>
+          <div class="qa-a">Claude Codeに「40〜60代の方が楽しめる、シンプルなゲームのアイデアを3つ教えてください。HTMLとJavaScriptだけで作れるものをお願いします。」と聞いてみましょう。</div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="section-label">✅ クリア条件</div>
+        <ul class="checklist">
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>ゲームのアイデアを決めた</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>Claude Codeと会話しながらゲームを作れた</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>ゲームが最後まで遊べる状態になった</li>
+          <li onclick="toggleCheck(this)"><span class="check-box"></span>Vercelで公開してURLを人に送れた</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- GLOSSARY -->
+  <div id="glossary" class="section-divider"><span>📖 用語集</span></div>
+  <div style="background:var(--white);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);border:1px solid var(--border);">
+    <div class="glossary-grid">
+      <div class="glossary-item"><div class="glossary-term">Claude Code</div><div class="glossary-def">Anthropicが提供するAIコーディングツール。自分のパソコン上でファイルを直接作成・編集しながらAIと会話できる。</div></div>
+      <div class="glossary-item"><div class="glossary-term">Git Bash</div><div class="glossary-def">パソコンに文字で指示を出すための「黒い画面」。コマンドを入力してパソコンを操作するツール。</div></div>
+      <div class="glossary-item"><div class="glossary-term">HTML</div><div class="glossary-def">ウェブページの構造を記述するための言語。「ここは見出し」「ここは段落」といった情報をコードで表現する。</div></div>
+      <div class="glossary-item"><div class="glossary-term">CSS</div><div class="glossary-def">ウェブページの見た目（色・フォント・レイアウト）を指定するための言語。HTMLと組み合わせて使う。</div></div>
+      <div class="glossary-item"><div class="glossary-term">JavaScript</div><div class="glossary-def">ウェブページに「動き」をつけるためのプログラミング言語。ボタンのクリック処理やユーザー入力の受け取りなどを担う。</div></div>
+      <div class="glossary-item"><div class="glossary-term">GitHub</div><div class="glossary-def">プログラムのファイルをクラウド上で管理・共有できるサービス。Vercelと連携してウェブ公開に使う。</div></div>
+      <div class="glossary-item"><div class="glossary-term">Vercel</div><div class="glossary-def">ウェブページやアプリをインターネットに無料で公開できるサービス。GitHubと連携するだけで自動的にURLが発行される。</div></div>
+      <div class="glossary-item"><div class="glossary-term">デプロイ</div><div class="glossary-def">作ったアプリをインターネット上に公開する操作のこと。「公開する」と同じ意味で使われることが多い。</div></div>
+      <div class="glossary-item"><div class="glossary-term">リポジトリ</div><div class="glossary-def">GitHubでファイルを管理するための入れ物。プロジェクトごとに1つ作るのが基本。</div></div>
+      <div class="glossary-item"><div class="glossary-term">バグ</div><div class="glossary-def">プログラムの不具合のこと。意図したとおりに動かない現象を指す。</div></div>
+      <div class="glossary-item"><div class="glossary-term">レスポンシブデザイン</div><div class="glossary-def">スマホ・タブレット・パソコンなど、画面サイズに合わせて自動的にレイアウトが調整されるデザインのこと。</div></div>
+      <div class="glossary-item"><div class="glossary-term">CLAUDE.md</div><div class="glossary-def">Claude Codeに「自分のことを覚えておいてほしい情報」を書いておくファイル。毎回説明しなくてもよくなる。</div></div>
+    </div>
+  </div>
+
+  <!-- COMPLETE -->
+  <div class="complete-banner">
+    <div style="font-size:48px;margin-bottom:12px;">🎉</div>
+    <h2>コース1 修了おめでとうございます！</h2>
+    <p>ゼロからWebアプリを作り、世界に公開する体験を積みました。<br>次はコース2で、React・Supabaseを使った本格的な開発に進みましょう。</p>
+  </div>
+
+</main>
+
+<script>
+// ===== LESSON TOGGLE =====
+function toggleLesson(n) {
+  const body = document.getElementById('body' + n);
+  const toggle = document.getElementById('toggle' + n);
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  toggle.classList.toggle('open', !isOpen);
+}
+
+// ===== CHECKLIST =====
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  saveState();
+}
+
+// ===== PROGRESS =====
+function toggleProg(n) {
+  const item = document.getElementById('prog' + n);
+  const check = document.getElementById('prog-check' + n);
+  const isDone = item.classList.contains('done');
+  item.classList.toggle('done', !isDone);
+  check.textContent = isDone ? '⬜' : '✅';
+  updateProgressBar();
+  saveState();
+}
+
+function updateProgressBar() {
+  const total = 4;
+  let done = 0;
+  for (let i = 1; i <= total; i++) {
+    if (document.getElementById('prog' + i).classList.contains('done')) done++;
+  }
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = done + ' / ' + total + ' レッスン完了';
+  document.getElementById('prog-pct').textContent = pct + '%';
+}
+
+// ===== Q&A =====
+function toggleQA(el) {
+  el.classList.toggle('open');
+  const answer = el.nextElementSibling;
+  answer.classList.toggle('open');
+}
+
+// ===== COPY =====
+function copyCode(btn) {
+  const code = btn.nextElementSibling.textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = '✓ コピー済み';
+    setTimeout(() => { btn.textContent = 'コピー'; }, 2000);
+  });
+}
+
+// ===== SAVE/LOAD STATE =====
+function saveState() {
+  const state = {};
+  // checklist
+  document.querySelectorAll('.checklist li').forEach((li, i) => {
+    state['check_' + i] = li.classList.contains('checked');
+  });
+  // progress
+  for (let i = 1; i <= 4; i++) {
+    state['prog_' + i] = document.getElementById('prog' + i).classList.contains('done');
+  }
+  try { localStorage.setItem('course1_state', JSON.stringify(state)); } catch(e) {}
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem('course1_state');
+    if (!raw) return;
+    const state = JSON.parse(raw);
+    document.querySelectorAll('.checklist li').forEach((li, i) => {
+      if (state['check_' + i]) li.classList.add('checked');
+    });
+    for (let i = 1; i <= 4; i++) {
+      if (state['prog_' + i]) {
+        document.getElementById('prog' + i).classList.add('done');
+        document.getElementById('prog-check' + i).textContent = '✅';
+      }
+    }
+    updateProgressBar();
+  } catch(e) {}
+}
+
+loadState();
+</script>
+</body>
+</html>
